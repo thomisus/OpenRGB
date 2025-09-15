@@ -114,6 +114,8 @@
 #define RAZER_HUNTSMAN_V2_ANALOG_PID                    0x0266
 #define RAZER_HUNTSMAN_V2_TKL_PID                       0x026B
 #define RAZER_HUNTSMAN_V2_PID                           0x026C
+#define RAZER_HUNTSMAN_V3_PRO_PID                       0x02A6
+#define RAZER_HUNTSMAN_V3_PRO_TKL_WHITE_PID             0x02A7
 #define RAZER_ORBWEAVER_CHROMA_PID                      0x0207
 #define RAZER_ORNATA_CHROMA_PID                         0x021E
 #define RAZER_ORNATA_CHROMA_V2_PID                      0x025D
@@ -239,6 +241,7 @@
 #define RAZER_FIREFLY_HYPERFLUX_PID                     0x0068
 #define RAZER_FIREFLY_PID                               0x0C00
 #define RAZER_FIREFLY_V2_PID                            0x0C04
+#define RAZER_FIREFLY_V2_PRO_PID                        0x0C08
 #define RAZER_GOLIATHUS_CHROMA_EXTENDED_PID             0x0C02
 #define RAZER_GOLIATHUS_CHROMA_PID                      0x0C01
 #define RAZER_GOLIATHUS_CHROMA_3XL_PID                  0x0C06
@@ -255,6 +258,7 @@
 #define RAZER_SEIREN_EMOTE_PID                          0x0F1B
 #define RAZER_STRIDER_CHROMA_PID                        0x0C05
 #define RAZER_THUNDERBOLT_4_DOCK_CHROMA_PID             0x0F21
+#define RAZER_HANBO_CHROMA_PID                          0x0F35
 
 typedef struct
 {

@@ -10,7 +10,7 @@
 \*---------------------------------------------------------*/
 
 #include "PhilipsWizController.h"
-#include "json.hpp"
+#include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 using namespace std::chrono_literals;
@@ -130,7 +130,7 @@ void PhilipsWizController::SetColor(unsigned char red, unsigned char green, unsi
         command["params"]["w"] = 0;
     }
 
-    
+
     /*-----------------------------------------------------------------*\
     | Fill in the setPilot command with RGB and brightness information. |
     | The bulb will not respond to 0, 0, 0, so if all channels are zero,|
@@ -173,14 +173,16 @@ void PhilipsWizController::SetScene(int scene, unsigned char brightness)
 
 void PhilipsWizController::ReceiveThreadFunction()
 {
-    char recv_buf[1024];
+    char recv_buf[1025];
+
+    port.set_receive_timeout(1, 0);
 
     while(ReceiveThreadRun.load())
     {
         /*-----------------------------------------------------------------*\
         | Receive up to 1024 bytes from the device with a 1s timeout        |
         \*-----------------------------------------------------------------*/
-        int size = port.udp_listen_timeout(recv_buf, 1024, 1, 0);
+        int size = port.udp_listen(recv_buf, 1024);
 
         if(size > 0)
         {

@@ -14,11 +14,13 @@
 #include "Detector.h"
 #include "RazerController.h"
 #include "RazerKrakenController.h"
+#include "RazerHanboController.h"
 #include "RazerDevices.h"
 #include "ResourceManager.h"
 #include "RGBController_Razer.h"
 #include "RGBController_RazerAddressable.h"
 #include "RGBController_RazerKraken.h"
+#include "RGBController_RazerHanbo.h"
 
 /******************************************************************************************\
 *                                                                                          *
@@ -151,6 +153,27 @@ void DetectRazerKrakenControllers(hid_device_info* info, const std::string& name
     }
 }   /* DetectRazerKrakenControllers() */
 
+/******************************************************************************************\
+*                                                                                          *
+*   DetectRazerHanboController                                                             *
+*                                                                                          *
+*       Tests the USB address to see if a Razer Hanbo controller exists there.             *
+*                                                                                          *
+\******************************************************************************************/
+
+void DetectRazerHanboControllers(hid_device_info* info, const std::string& name)
+{
+    hid_device* dev = hid_open_path(info->path);
+
+    if(dev)
+    {
+        RazerHanboController* controller = new RazerHanboController(dev, info->path, info->product_id, name);
+
+        RGBController_RazerHanbo* rgb_controller = new RGBController_RazerHanbo(controller);
+        ResourceManager::get()->RegisterRGBController(rgb_controller);
+    }
+}   /* DetectRazerHanboControllers() */
+
 /*-----------------------------------------------------------------------------------------------------*\
 | Keyboards                                                                                             |
 \*-----------------------------------------------------------------------------------------------------*/
@@ -189,6 +212,8 @@ REGISTER_HID_DETECTOR_IPU("Razer Huntsman Tournament Edition",               Det
 REGISTER_HID_DETECTOR_IPU("Razer Huntsman V2 Analog",                        DetectRazerControllers,        RAZER_VID,  RAZER_HUNTSMAN_V2_ANALOG_PID,                   0x03,   0x0C,   0x01);
 REGISTER_HID_DETECTOR_IPU("Razer Huntsman V2 TKL",                           DetectRazerControllers,        RAZER_VID,  RAZER_HUNTSMAN_V2_TKL_PID,                      0x03,   0x0C,   0x01);
 REGISTER_HID_DETECTOR_IPU("Razer Huntsman V2",                               DetectRazerControllers,        RAZER_VID,  RAZER_HUNTSMAN_V2_PID,                          0x03,   0x0C,   0x01);
+REGISTER_HID_DETECTOR_IPU("Razer Huntsman V3 Pro",                           DetectRazerControllers,        RAZER_VID,  RAZER_HUNTSMAN_V3_PRO_PID,                      0x03,   0x0C,   0x01);
+REGISTER_HID_DETECTOR_IPU("Razer Huntsman V3 Pro TKL White",                 DetectRazerControllers,        RAZER_VID,  RAZER_HUNTSMAN_V3_PRO_TKL_WHITE_PID,            0x03,   0x0C,   0x01);
 REGISTER_HID_DETECTOR_IPU("Razer Ornata Chroma",                             DetectRazerControllers,        RAZER_VID,  RAZER_ORNATA_CHROMA_PID,                        0x02,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Ornata Chroma V2",                          DetectRazerControllers,        RAZER_VID,  RAZER_ORNATA_CHROMA_V2_PID,                     0x02,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Ornata V3",                                 DetectRazerControllers,        RAZER_VID,  RAZER_ORNATA_V3_PID,                            0x02,   0x01,   0x02);
@@ -250,8 +275,8 @@ REGISTER_HID_DETECTOR_IPU("Razer Basilisk V3",                               Det
 REGISTER_HID_DETECTOR_IPU("Razer Basilisk V3 35K",                           DetectRazerControllers,        RAZER_VID,  RAZER_BASILISK_V3_35K_PID,                      0x03,   0x0C,   0x01);
 REGISTER_HID_DETECTOR_IPU("Razer Basilisk V3 Pro (Wired)",                   DetectRazerControllers,        RAZER_VID,  RAZER_BASILISK_V3_PRO_WIRED_PID,                0x00,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Basilisk V3 Pro (Wireless)",                DetectRazerControllers,        RAZER_VID,  RAZER_BASILISK_V3_PRO_WIRELESS_PID,             0x00,   0x01,   0x02);
-REGISTER_HID_DETECTOR_IPU("Razer Basilisk V3 Pro 35K (Wired)",               DetectRazerControllers,        RAZER_VID,  RAZER_BASILISK_V3_PRO_35K_WIRED_PID,                0x00,   0x01,   0x02);
-REGISTER_HID_DETECTOR_IPU("Razer Basilisk V3 Pro 35K (Wireless)",            DetectRazerControllers,        RAZER_VID,  RAZER_BASILISK_V3_PRO_35K_WIRELESS_PID,             0x00,   0x01,   0x02);
+REGISTER_HID_DETECTOR_IPU("Razer Basilisk V3 Pro 35K (Wired)",               DetectRazerControllers,        RAZER_VID,  RAZER_BASILISK_V3_PRO_35K_WIRED_PID,            0x00,   0x01,   0x02);
+REGISTER_HID_DETECTOR_IPU("Razer Basilisk V3 Pro 35K (Wireless)",            DetectRazerControllers,        RAZER_VID,  RAZER_BASILISK_V3_PRO_35K_WIRELESS_PID,         0x00,   0x01,   0x02);
 // REGISTER_HID_DETECTOR_PU ("Razer Basilisk V3 Pro (Bluetooth)",               DetectRazerControllers,        RAZER_VID,  RAZER_BASILISK_V3_PRO_BLUETOOTH_PID,                    0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Basilisk V3 X HyperSpeed",                  DetectRazerControllers,        RAZER_VID,  RAZER_BASILISK_V3_X_HYPERSPEED_PID,             0x00,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Cobra",                                     DetectRazerControllers,        RAZER_VID,  RAZER_COBRA_PID,                                0x00,   0x01,   0x02);
@@ -323,6 +348,7 @@ REGISTER_HID_DETECTOR_I(  "Razer Tiamat 7.1 V2",                             Det
 \*-----------------------------------------------------------------------------------------------------*/
 REGISTER_HID_DETECTOR_IPU("Razer Firefly",                                   DetectRazerControllers,        RAZER_VID,  RAZER_FIREFLY_PID,                              0x00,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Firefly V2",                                DetectRazerControllers,        RAZER_VID,  RAZER_FIREFLY_V2_PID,                           0x00,   0x01,   0x02);
+REGISTER_HID_DETECTOR_IPU("Razer Firefly V2 Pro",                            DetectRazerControllers,        RAZER_VID,  RAZER_FIREFLY_V2_PRO_PID,                       0x00,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Firefly Hyperflux",                         DetectRazerControllers,        RAZER_VID,  RAZER_FIREFLY_HYPERFLUX_PID,                    0x00,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Goliathus",                                 DetectRazerControllers,        RAZER_VID,  RAZER_GOLIATHUS_CHROMA_PID,                     0x00,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Goliathus Chroma 3XL",                      DetectRazerControllers,        RAZER_VID,  RAZER_GOLIATHUS_CHROMA_3XL_PID,                 0x00,   0x01,   0x02);
@@ -335,7 +361,7 @@ REGISTER_HID_DETECTOR_IPU("Razer Strider Chroma",                            Det
 REGISTER_HID_DETECTOR_IPU("Razer Base Station Chroma",                       DetectRazerControllers,        RAZER_VID,  RAZER_BASE_STATION_CHROMA_PID,                  0x00,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Base Station V2 Chroma",                    DetectRazerControllers,        RAZER_VID,  RAZER_BASE_STATION_V2_CHROMA_PID,               0x00,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Charging Pad Chroma",                       DetectRazerControllers,        RAZER_VID,  RAZER_CHARGING_PAD_CHROMA_PID,                  0x00,   0x0C,   0x01);
-REGISTER_HID_DETECTOR_I  ("Razer Chroma Addressable RGB Controller",         DetectRazerARGBControllers,    RAZER_VID,  RAZER_CHROMA_ADDRESSABLE_RGB_CONTROLLER_PID,    0x00                );
+REGISTER_HID_DETECTOR_I("Razer Chroma Addressable RGB Controller",           DetectRazerARGBControllers,    RAZER_VID,  RAZER_CHROMA_ADDRESSABLE_RGB_CONTROLLER_PID,    0x00                );
 REGISTER_HID_DETECTOR_IPU("Razer Chroma HDK",                                DetectRazerControllers,        RAZER_VID,  RAZER_CHROMA_HDK_PID,                           0x02,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Chroma Mug Holder",                         DetectRazerControllers,        RAZER_VID,  RAZER_CHROMA_MUG_PID,                           0x00,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Chroma PC Case Lighting Kit",               DetectRazerControllers,        RAZER_VID,  RAZER_CHROMA_PC_CASE_LIGHTING_KIT_PID,          0x02,   0x01,   0x02);
@@ -349,8 +375,9 @@ REGISTER_HID_DETECTOR_IPU("Razer Mouse Bungee V3 Chroma",                    Det
 REGISTER_HID_DETECTOR_IPU("Razer Mouse Dock Chroma",                         DetectRazerControllers,        RAZER_VID,  RAZER_MOUSE_DOCK_CHROMA_PID,                    0x00,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Razer Mouse Dock Pro",                            DetectRazerControllers,        RAZER_VID,  RAZER_MOUSE_DOCK_PRO_PID,                       0x00,   0x01,   0x02);
 REGISTER_HID_DETECTOR_IPU("Lian Li O11 Dynamic - Razer Edition",             DetectRazerControllers,        RAZER_VID,  RAZER_O11_DYNAMIC_PID,                          0x02,   0x01,   0x02);
-REGISTER_HID_DETECTOR_PU ("Razer Seiren Emote",                              DetectRazerControllers,        RAZER_VID,  RAZER_SEIREN_EMOTE_PID,                         0x0C,   0x01        );
+REGISTER_HID_DETECTOR_PU("Razer Seiren Emote",                               DetectRazerControllers,        RAZER_VID,  RAZER_SEIREN_EMOTE_PID,                         0x0C,   0x01        );
 REGISTER_HID_DETECTOR_PU("Razer Thunderbolt 4 Dock Chroma",                  DetectRazerControllers,        RAZER_VID,  RAZER_THUNDERBOLT_4_DOCK_CHROMA_PID,            0x0C,   0x01        );
+REGISTER_HID_DETECTOR_IPU("Razer Hanbo Chroma",                              DetectRazerHanboControllers,   RAZER_VID,  RAZER_HANBO_CHROMA_PID,                         0x00,   0xFF00, 0x01);
 
 /*-----------------------------------------------------------------------------------------------------*\
 | Nommo devices seem to have an issue where interface 1 doesn't show on Linux or MacOS.  Due to the way |
